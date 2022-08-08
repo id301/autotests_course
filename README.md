@@ -1,1 +1,1 @@
-# autotests_course
+# Repository for Python training

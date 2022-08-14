@@ -18,6 +18,3 @@ def test_add_contact(app):
                 "test@test.ru"))
     app.return_to_contacts_page()
     app.logout()
-
-if __name__ == "__main__":
-    unittest.main()

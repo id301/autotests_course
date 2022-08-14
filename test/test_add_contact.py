@@ -12,9 +12,9 @@ def app(request):
 
 def test_add_contact(app):
     app.open_home_page()
-    app.login(username="admin", password="secret")
+    app.session.login(username="admin", password="secret")
     app.open_add_contact_page()
     app.add_contact(Contact("John", "Doe", "City, random street, 1 building", "3417698", "+79342319032",
                 "test@test.ru"))
     app.return_to_contacts_page()
-    app.logout()
+    app.session.logout()

@@ -11,6 +11,7 @@ class ContactHelper:
 
     def add(self, contact):
         wd = self.app.wd
+        self.open_add_contact_page()
         ##add firstname
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
@@ -36,6 +37,7 @@ class ContactHelper:
         wd.find_element_by_name("email").send_keys("%s" % contact.email)
         #save
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        self.return_to_contacts_page()
 
     def delete_first_contact(self):
         wd = self.app.wd

@@ -11,7 +11,5 @@ def app(request):
 
 
 def test_add_contact(app):
-    app.session.login(username="admin", password="secret")
     app.contact.add(Contact("John", "Doe", "City, random street, 1 building", "3417698", "+79342319032",
                 "test@test.ru"))
-    app.session.logout()

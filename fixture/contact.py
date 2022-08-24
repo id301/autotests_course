@@ -7,7 +7,8 @@ class ContactHelper:
 
     def open_contactlist_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not(wd.current_url.endswith("addressbook/") and len(wd.find_elements_by_id("MassCB")) > 0):
+            wd.find_element_by_link_text("home").click()
 
     def open_add_contact_page(self):
         wd = self.app.wd
@@ -67,3 +68,7 @@ class ContactHelper:
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.open_contactlist_page()
+
+    def count(self):
+        wd = self.app.wd
+        return len(wd.find_elements_by_xpath("//img[@alt='Edit']"))

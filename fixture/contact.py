@@ -1,5 +1,7 @@
 __author__ = 'id301'
 
+from model.contact import Contact
+
 class ContactHelper:
 
     def __init__(self, app):
@@ -73,3 +75,17 @@ class ContactHelper:
         wd = self.app.wd
         self.open_add_contact_page()
         return len(wd.find_elements_by_xpath("//img[@alt='Edit']"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        contacts = []
+        rows = wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr")[1:]
+        for row in rows:
+            id = row.find_element_by_xpath("//td[1]/input").get_attribute("id")
+            assert id is not None
+            lastname = row.find_element_by_xpath("//td[2]").text
+            assert lastname is not None
+            firstname = row.find_element_by_xpath("//td[3]").text
+            assert firstname is not None
+            contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
+        return contacts

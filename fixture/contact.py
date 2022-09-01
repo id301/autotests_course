@@ -79,13 +79,18 @@ class ContactHelper:
     def get_contact_list(self):
         wd = self.app.wd
         contacts = []
+
         rows = wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr")[1:]
-        for row in rows:
-            id = row.find_element_by_xpath("//td[1]/input").get_attribute("id")
-            assert id is not None
-            lastname = row.find_element_by_xpath("//td[2]").text
-            assert lastname is not None
-            firstname = row.find_element_by_xpath("//td[3]").text
-            assert firstname is not None
+        xpath_left_part = "//table[@id='maintable']/tbody/tr["
+        xpath_right_part_id = "]/td[1]/input"
+        xpath_right_part_lastname = "]/td[2]"
+        xpath_right_part_firstname = "]/td[3]"
+
+        for row in range(len(rows)):
+            row += 2
+            id = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_id).get_attribute("id")
+            lastname = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_lastname).text
+            firstname = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_firstname).text
             contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
+
         return contacts

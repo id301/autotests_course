@@ -54,11 +54,11 @@ class ContactHelper:
         self.open_contactlist_page()
         self.contact_cache = None
 
-    def edit_first(self, contact):
+    def edit_by_index(self, index, contact):
         wd = self.app.wd
         self.open_contactlist_page()
         # select first contact
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
         # fill fields
         self.fill_contact_fields(contact)
         # save
@@ -66,15 +66,20 @@ class ContactHelper:
         self.open_contactlist_page()
         self.contact_cache = None
 
-    def delete_first(self):
+    def edit_first(self, contact):
+        self.edit_by_index(0, contact)
+
+    def delete_by_index(self, index):
         wd = self.app.wd
         self.open_contactlist_page()
-        # select first contact
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.open_contactlist_page()
         self.contact_cache = None
+
+    def delete_first(self):
+        self.delete_by_index(0)
 
     def count(self):
         wd = self.app.wd

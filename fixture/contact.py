@@ -4,6 +4,8 @@ from model.contact import Contact
 
 class ContactHelper:
 
+    contact_cache = None
+
     def __init__(self, app):
         self.app = app
 
@@ -61,6 +63,7 @@ class ContactHelper:
         # save
         wd.find_element_by_name("update").click()
         self.open_contactlist_page()
+        contact_cache = None
 
     def delete_first(self):
         wd = self.app.wd
@@ -70,6 +73,7 @@ class ContactHelper:
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.open_contactlist_page()
+        contact_cache = None
 
     def count(self):
         wd = self.app.wd
@@ -77,20 +81,21 @@ class ContactHelper:
         return len(wd.find_elements_by_xpath("//img[@alt='Edit']"))
 
     def get_contact_list(self):
-        wd = self.app.wd
-        contacts = []
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.contact_cache = []
 
-        rows = wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr")[1:]
-        xpath_left_part = "//table[@id='maintable']/tbody/tr["
-        xpath_right_part_id = "]/td[1]/input"
-        xpath_right_part_lastname = "]/td[2]"
-        xpath_right_part_firstname = "]/td[3]"
+            rows = wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr")[1:]
+            xpath_left_part = "//table[@id='maintable']/tbody/tr["
+            xpath_right_part_id = "]/td[1]/input"
+            xpath_right_part_lastname = "]/td[2]"
+            xpath_right_part_firstname = "]/td[3]"
 
-        for row in range(len(rows)):
-            row += 2
-            id = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_id).get_attribute("id")
-            lastname = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_lastname).text
-            firstname = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_firstname).text
-            contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
+            for row in range(len(rows)):
+                row += 2
+                id = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_id).get_attribute("id")
+                lastname = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_lastname).text
+                firstname = wd.find_element_by_xpath(xpath_left_part + str(row) + xpath_right_part_firstname).text
+                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id))
 
-        return contacts
+        return list(self.contact_cache)

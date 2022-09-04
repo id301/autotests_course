@@ -52,6 +52,7 @@ class ContactHelper:
         # save
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.open_contactlist_page()
+        self.contact_cache = None
 
     def edit_first(self, contact):
         wd = self.app.wd
@@ -63,7 +64,7 @@ class ContactHelper:
         # save
         wd.find_element_by_name("update").click()
         self.open_contactlist_page()
-        contact_cache = None
+        self.contact_cache = None
 
     def delete_first(self):
         wd = self.app.wd
@@ -73,7 +74,7 @@ class ContactHelper:
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.open_contactlist_page()
-        contact_cache = None
+        self.contact_cache = None
 
     def count(self):
         wd = self.app.wd

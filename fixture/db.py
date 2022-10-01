@@ -2,6 +2,7 @@ __author__ = 'id301'
 
 import pymysql
 from model.group import Group
+from model.contact import Contact
 
 class DbFixture:
 
@@ -20,6 +21,20 @@ class DbFixture:
             for row in cursor:
                 (id, name, header, footer) = row
                 list.append(Group(id=str(id), name=name, header=header, footer=footer))
+        finally:
+            cursor.close()
+        return list
+
+    def get_contact_list(self):
+        list = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("select id, firstname, lastname, address, home, mobile, work, email, email2, email3 from addressbook")
+            for row in cursor:
+                (id, firstname, lastname, address, home_number, phone_number, work_phone, email, email2, email3) = row
+                list.append(Contact(id=str(id), firstname=firstname, lastname=lastname, address=address,
+                                    home_number=home_number, phone_number=phone_number, work_phone=work_phone,
+                                    email=email, email2=email2, email3=email3))
         finally:
             cursor.close()
         return list

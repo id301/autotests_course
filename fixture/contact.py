@@ -108,7 +108,7 @@ class ContactHelper:
     def delete_by_id(self, id):
         wd = self.app.wd
         self.open_contactlist_page()
-        wd.find_element_by_id(str(id)).click()#_xpath("//img[@alt='Edit']")[index].click()
+        self.choose_contact(id)
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
@@ -190,3 +190,12 @@ class ContactHelper:
         return Contact(home_number=home_number, phone_number=phone_number, work_phone=work_phone,
                        secondary_phone=secondary_phone)
 
+    def choose_contact(self, id):
+        wd = self.app.wd
+        wd.find_element_by_id(str(id)).click()
+
+    def add_to_group(self, id):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//select[@name='to_group']/option[@value='%s']" % id).click()
+        wd.find_element_by_name('add').click()
+        self.open_contactlist_page()

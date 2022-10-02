@@ -2,6 +2,7 @@ __author__ = 'id301'
 
 from fixture.application import Application
 from fixture.db import DbFixture
+from fixture.orm import ORMFixture
 import pytest
 import json
 import os.path
@@ -29,6 +30,15 @@ def db(request):
         dbfixture.destroy()
     request.addfinalizer(fin)
     return dbfixture
+
+@pytest.fixture(scope="session")
+def orm(request):
+    db_config = load_config(request.config.getoption("--target"))['db']
+    ormfixture = ORMFixture(host=db_config["host"], user=db_config["user"], name=db_config["name"], password=db_config["password"])
+    def fin():
+        ormfixture.destroy()
+    request.addfinalizer(fin)
+    return ormfixture
 
 @pytest.fixture(scope="session", autouse=True)
 def stop(request):

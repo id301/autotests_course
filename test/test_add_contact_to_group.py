@@ -12,10 +12,14 @@ def test_add_contact_to_group(app, db, orm):
     if len(db.get_group_list()) == 0:
         app.group.create(Group(name="test"))
     #Test itself
+    contact, group = random_add_contact_to_group(app, db)
+    assert contact in orm.get_contacts_in_group(group)
+
+def random_add_contact_to_group(app, db):
     contacts = db.get_contact_list()
     contact = random.choice(contacts)
     app.contact.choose_contact(contact.id)
     groups = db.get_group_list()
     group = random.choice(groups)
     app.contact.add_to_group(group.id)
-    assert contact in orm.get_contacts_in_group(group)
+    return contact, group

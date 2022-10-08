@@ -16,15 +16,5 @@ def test_del_contact_from_group(app, db, orm):
     if len(db.get_entities_from_address_in_groups()) == 0:
         #add contact to group
         contact, group = random_add_contact_to_group(app, db)
-    # Test itself
-    if contact is None and group is None:
-        binded_list = db.get_entities_from_address_in_groups()
-        binded_pair = random.choice(binded_list)
-        for c in db.get_contact_list():
-            if c.id == binded_pair.contact_id:
-                contact = c
-        for g in db.get_group_list():
-            if g.id == binded_pair.group_id:
-                group = g
     app.contact.del_from_group(contact.id, group.id)
     assert contact in orm.get_contacts_not_in_group(group)

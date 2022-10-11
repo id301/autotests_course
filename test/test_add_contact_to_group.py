@@ -26,6 +26,7 @@ def add_new_contact_to_group(app, db, orm):
         if len(contacts) > 0:
             contact = random.choice(contacts)
             pair_found = True
+    app.contact.open_contactlist_page()
     app.contact.choose_contact(contact.id)
     app.contact.add_to_group(group.id)
     return contact, group

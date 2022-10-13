@@ -192,10 +192,12 @@ class ContactHelper:
 
     def choose_contact(self, id):
         wd = self.app.wd
+        self.open_contactlist_page()
         wd.find_element_by_id(str(id)).click()
 
     def add_to_group(self, id):
         wd = self.app.wd
+        self.open_contactlist_page()
         wd.find_element_by_xpath("//select[@name='to_group']/option[@value='%s']" % id).click()
         wd.find_element_by_name('add').click()
         self.open_contactlist_page()
